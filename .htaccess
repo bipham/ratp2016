@@ -1,0 +1,18 @@
+
+# BEGIN WordPress
+AuthName "Admin Control Panel"
+AuthType Basic
+AuthUserFile /users/www/html/ratp2016/.htpasswd
+Require valid-user
+
+<IfModule mod_rewrite.c>
+
+RewriteEngine On
+RewriteBase /ratp2016/
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /ratp2016/index.php [L]
+</IfModule>
+
+# END WordPress

@@ -1,0 +1,131 @@
+//** Load fonts from this directory.
+@font-ratp-path:          "../fonts/";
+@font-family-regular: 'parisineofficeregular';
+@font-family-italic: 'parisineofficeitalic';
+@font-family-bold: 'parisineofficebold';
+@font-roboto-regular: 'robotoregular';
+@font-roboto-bold: 'robotobold';
+//** Load fonts-size from this directory.
+@font-size-ratp: 14px;
+@font-size-ratp2: ceil((@font-size-ratp * 1.07)); // ~15px
+@font-size-ratp3: ceil((@font-size-ratp * 1.25)); // ~18px
+@font-size-ratp4: ceil((@font-size-ratp * 1.42)); // ~20px
+@font-size-ratp5: ceil((@font-size-ratp * 2)); // ~28px
+@font-size-ratp6: floor((@font-size-ratp * 2.15)); // ~30px
+@font-size-ratp7: ceil((@font-size-ratp * 2.28)); // ~32px
+@font-size-ratp8: ceil((@font-size-ratp * 1.14)); // ~16px
+// **Selector
+// line-height
+@line-height-ratp: ~"body, 
+                    .btn, 
+                    .menu-justified-page-accueil .nav-tabs > li > a";
+
+@{line-height-ratp} {
+  line-height: 1.1;
+  @media (max-width: 1023px) {
+    line-height: 1;
+  }
+}
+
+//font-size 14
+@font-size-14: ~".menu-justified-page-accueil .nav-justified > li > a,
+                 .item-publication span";
+@{font-size-14} {
+  font-size: @font-size-ratp;
+}
+
+//font-size 15
+@font-size-15: ~" ";
+@{font-size-15} {
+  font-size: @font-size-ratp2;
+}
+
+//font-size 18
+@font-size-18: ~"body,
+                .btn";
+@{font-size-18} {
+  font-size: @font-size-ratp3;
+}
+
+//font-size 20
+@font-size-20: ~".menu-justified-page-accueil .nav-tabs > li > a,
+                 .title-publication ";
+@{font-size-20} {
+  font-size: @font-size-ratp4;
+}
+
+//font-size 28
+@font-size-28: ~".title-page-accueil";
+@{font-size-28} {
+  font-size: @font-size-ratp5;
+  @media (max-width: 1023px) {
+    font-size: @font-size-ratp4;
+  }
+}
+
+//font-size 30
+@font-size-30: ~".block-publications .title";
+@{font-size-30} {
+  font-size: @font-size-ratp6;
+}
+
+//font-family-bold
+@font-family-bold-ratp: ~".title-page-accueil,
+                          .menu-justified-page-accueil .nav-tabs > li.active > a, 
+                          .menu-justified-page-accueil .nav-tabs > li:focus > a, 
+                          .menu-justified-page-accueil .nav-tabs > li.active a:hover, 
+                          .menu-justified-page-accueil .nav-tabs > li:focus a:hover,
+                          .block-publications .title,
+                          .title-publication,
+                          .title-section,
+                          b";
+@{font-family-bold-ratp} {
+  font-family: @font-family-bold,sans-serif;
+}
+
+
+
+//** Load color from this directory.
+@color-body: #262626;
+@color-green: #25a794;
+@color-border: #dedede;
+@color-white: #ffffff;
+@color-strong-yellow: #cdc82b;
+//** Components
+.border-nav{
+  border: 1px solid #dedede;
+}
+.border-radius(@radius) {
+  -webkit-border-radius: @radius;
+     -moz-border-radius: @radius;
+          border-radius: @radius;
+}
+.align-items-center {
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+.flex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+.middel{
+  width: 500px;
+  display: table-cell;
+  vertical-align: middle;
+}
+.before-after-clear{
+  &:before,
+  &:after{
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+.mobi-full-width{
+  margin-left: -15px;
+  margin-right: -15px;
+}
