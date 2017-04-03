@@ -10,10 +10,11 @@ var conveyor = jQuery(".content-conveyor", jQuery("#sliderContent"));
 var item_vertical = jQuery(".item img.img-home-slider-vertical", jQuery("#sliderContent"));
 var item_horizontal = jQuery(".item img.img-home-slider-horizontal", jQuery("#sliderContent"));
 var thumbnailScroll = jQuery('#bx-pager');
+var draggableScroll = jQuery('#draggable .content');
+var draggableScrollContent = jQuery('#draggable .content .scroll-content');
 var ul_thumbnail = jQuery('ul.thumbnail-list-img');
 var widthBxPager = 0;
 var view = jQuery('.viewer.ui-corner-all');
-// var li_thumbnail = jQuery('ul.thumbnail-list-img li.li-img-thumb')
 var item = jQuery(".item", jQuery("#sliderContent"));
 
 //set length of conveyor
@@ -22,6 +23,8 @@ conveyor.css("width", item_vertical.length * parseInt(item_vertical.css("width")
 var drag = jQuery("#draggable");
 var widthBody = parseInt(jQuery('body').css("width"));
 var widthSliderContent = parseInt(jQuery('#sliderContent').css("width"));
+var heightSliderContent = parseInt(jQuery('#sliderContent').css("width"));
+var posTopSliderContent = jQuery('#sliderContent').offset().top;
 var posLeftConveyor = (widthBody - widthSliderContent) / 2;
 var widthConveyor = parseInt(conveyor.css("width"));
 var posXInit = (widthBody - parseInt(jQuery('.thumbnail-slider').css("width"))) / 2 + 8;
@@ -30,6 +33,7 @@ widthBxPager = widthConveyor / 10;
 console.log('widthThumbnailScroll: ' + widthBxPager);
 var widthThumbnailScroll = widthBxPager;
 thumbnailScroll.css("width", widthBxPager + 12);
+draggableScrollContent.css("width", widthBxPager + 12);
 var totalImgSlider = item_vertical.length + item_horizontal.length;
 var slideIndexThumb = 0;
 
@@ -49,15 +53,9 @@ jQuery(function() {
             var posXDrag = drag.position().left;
             var moveXThumb = posXSlider/10;
             drag.css("left", -moveXThumb + "px");
+            moveXThumb = moveXThumb - 6;
+            draggableScrollContent.css("left", "-" + -moveXThumb + "px");
             var leftOfDrag = jQuery('#draggable').position().left + 6;
-            var rightOfDrag = leftOfDrag + 96;
-            jQuery(".item", jQuery("#sliderContent")).each(function() {
-                if (jQuery(this).offset().left > posLeftConveyor) {
-                    slideIndex = jQuery(this).attr('data-slide-index');
-                    return false;
-                }
-            }) ;
-            updateVisiting(jQuery('.li-img-' + slideIndex), slideIndex, leftOfDrag, rightOfDrag);
         },
         stop: function() {
         }
@@ -68,7 +66,6 @@ jQuery(function() {
     jQuery("#draggable").draggable({
         axis: 'x',
         scroll: true,
-        // containment: [posXInit, 0, posLeftConveyor + 10 + widthBxPager, 0],
         containment: '#bx-pager',
         scrollSpeed: 100,
         scrollSensitivity: 100,
@@ -76,36 +73,27 @@ jQuery(function() {
 
         },
         drag: function(e, ui) {
-            // ui.position.left = ui.position.left-100;
             posXDrag = jQuery(this).position().left;
             var leftOfDrag = jQuery('#draggable').position().left + 6;
             var rightOfDrag = leftOfDrag + 96;
             var moveXSlider = (posXDrag) * (widthConveyor / (widthThumbnailScroll));
             conveyor.css("left", "-" + moveXSlider + "px");
-            
-            // conveyor.animate({
-            //     'left': moveXSlider + 'px'
-            // }, 0, function() {
-
-            // });
-            updateVisiting(jQuery('.li-img-' + slideIndex), slideIndex, leftOfDrag, rightOfDrag);
+            draggableScrollContent.css("left", "-" + leftOfDrag + "px");
         }
     });
 });
 
 jQuery(".img-drop-active").droppable({
-    accept: '#draggable', 
+    accept: '#draggable',
     axis: 'x',
     containment: '#bx-pager',
-     scroll: true,
+    scroll: true,
     scrollSpeed: 100,
     scrollSensitivity: 100,
     start: function() {
 
-        },
+    },
     over: function(event, ui) {
-        slideIndex = jQuery(this).parent().attr('data-slide-index');
-        jQuery(this).parent().addClass('img-visiting');
     },
     out: function(event, ui) {
 
@@ -114,59 +102,6 @@ jQuery(".img-drop-active").droppable({
 
     }
 });
-
-function updateVisiting ($this, slideIndex, leftOfDrag, rightOfDrag) {
-        for (var i = parseInt(slideIndex) - 1; i > -1; i--) {
-            if (jQuery('.li-img-' + i).find('.img-thumbnail img').hasClass('img-thumb-vertical') == true) {
-                    var rightOfPreDiv = jQuery('.li-img-' + i).position().left + 32;
-            }
-            else var rightOfPreDiv = jQuery('.li-img-' + i).position().left + 64;
-            
-            if (rightOfPreDiv > leftOfDrag) {
-               
-                 jQuery('.li-img-' + i).addClass('img-visiting');
-            }
-            
-            else {
-                jQuery('.li-img-' + i).removeClass('img-visiting');
-                break;
-            }
-        }
-
-        for (var i = parseInt(slideIndex) + 1; i < totalImgSlider; i++ ) {
-            if (jQuery('.li-img-' + i).position().left < rightOfDrag) {
-               
-                jQuery('.li-img-' + i).addClass('img-visiting');
-                
-            }
-            else {
-                 jQuery('.li-img-' + i).removeClass('img-visiting');
-                 break;
-            }
-        }
-};
-
-function removeVisit ($this, slideIndex, leftOfDrag, rightOfDrag) {
-        for (var i = parseInt(slideIndex) - 1; i > -1; i--) {
-            if (jQuery('.li-img-' + i).find('.img-thumbnail img').hasClass('img-thumb-vertical') == true) {
-                    var rightOfPreDiv = jQuery('.li-img-' + i).position().left + 32;
-            }
-            else var rightOfPreDiv = jQuery('.li-img-' + i).position().left + 64;
-            
-            if (rightOfPreDiv > leftOfDrag) {
-               
-                 jQuery('.li-img-' + i).removeClass('img-visiting');
-            }
-        }
-
-        for (var i = parseInt(slideIndex) + 1; i < totalImgSlider; i++ ) {
-           if (jQuery('.li-img-' + i).position().left < rightOfDrag) {
-               
-                jQuery('.li-img-' + i).removeClass('img-visiting');
-                
-            }
-        }
-};
 
 jQuery('.row.home-slider-overview').hover(function(event) {
     if (isHover == false) {
@@ -190,13 +125,8 @@ jQuery('ul.thumbnail-list-img li').click(function() {
 
 function chooseThumbnailImage($this, oldIndex) {
     slideIndex = $this.attr('data-slide-index');
-    // var 
-    $this.addClass('img-visiting');
     var posX = $this.position().left;
     var posXDrag = jQuery('#draggable').position().left;
-
-    removeVisit(jQuery('.li-img-' + slideIndex), slideIndex, (posXDrag + 6), (posXDrag + 102));
-
     if (slideIndex == (totalImgSlider - 1)) {
         if ($this.find('.img-thumbnail img').hasClass('img-thumb-vertical') == true) {
             posX = posX - 6 - 64;
@@ -206,22 +136,23 @@ function chooseThumbnailImage($this, oldIndex) {
     } else {
         posX = posX - 6;
     }
-
-    
-    jQuery('#draggable').animate({
+    drag.animate({
         'left': posX + 'px'
-    }, 100, function() {
+    }, 200, function() {
 
     });
-
     var newX = posX * 10;
     conveyor.animate({
         'left': "-" + newX + 'px'
     }, 200, function() {
+    });
+    posX = posX + 6;
+
+    draggableScrollContent.animate({
+        'left': -posX + "px" 
+    }, 200, function() {
 
     });
-
-    updateVisiting(jQuery('.li-img-' + slideIndex), slideIndex, (posX + 6), (posX + 102));
 }
 
 
@@ -235,7 +166,8 @@ jQuery('#sliderContent div.item .btn-zoom').click(function() {
         slideMargin: 50,
         controls: false,
         speed: 500,
-                pagerCustom: '.customSlider',
+        pagerCustom: '.customSlider',
+        touchEnabled: false,
         pagerType: 'short',
         infiniteLoop: false,
         onSlideAfter: function($slideElement, oldIndex, newIndex) {
@@ -276,6 +208,7 @@ function updateIndexSlider(newIndex, totalIndex) {
 
 jQuery('.next-btn').click(function() {
     var currentDetail = sliderDetail.getCurrentSlide();
+     zoomOutImage(currentDetail);
     if (currentDetail != (sliderDetailTotal - 1)) {
         sliderDetail.goToNextSlide();
         updateIndexSlider(currentDetail + 1, sliderDetailTotal);
@@ -284,6 +217,7 @@ jQuery('.next-btn').click(function() {
 
 jQuery('.prev-btn').click(function() {
     var currentDetail = sliderDetail.getCurrentSlide();
+     zoomOutImage(currentDetail);
     if (currentDetail != 0) {
         sliderDetail.goToPrevSlide();
         updateIndexSlider(currentDetail - 1, sliderDetailTotal);
@@ -292,14 +226,14 @@ jQuery('.prev-btn').click(function() {
 
 //create slider
 sliderMobile = jQuery('.bxslider.slider-mobile').bxSlider({
-        startSlide: 0,
-        slideMargin: 50,
-        controls: false,
-        pagerCustom: '.customSliderMobile',
-        speed: 500,
-        onSlideAfter: function($slideElement, oldIndex, newIndex) {
-            updateStatusSelectMobile (newIndex, oldIndex);
-        }
+    startSlide: 0,
+    slideMargin: 50,
+    controls: false,
+    pagerCustom: '.customSliderMobile',
+    speed: 500,
+    onSlideAfter: function($slideElement, oldIndex, newIndex) {
+        updateStatusSelectMobile (newIndex, oldIndex);
+    }
 });
 
 jQuery('i.item-pagination-circle').click(function() {
@@ -313,3 +247,54 @@ function updateStatusSelectMobile (newIndex, oldIndex) {
     jQuery('.item-pagination-' + newIndex).addClass('active');
     jQuery('.item-pagination-' + oldIndex).removeClass('active');
 };
+
+
+jQuery('.btn-zoom.btn-zoom-in-slider-detail').click(function() {
+    var currentImage = sliderDetail.getCurrentSlide();
+    zoomInImage(currentImage);
+});
+
+jQuery('.btn-zoom.btn-zoom-out-slider-detail').click(function() {
+    var currentImage = sliderDetail.getCurrentSlide();
+    zoomOutImage(currentImage);
+});
+
+function zoomInImage (currentImage) {
+    jQuery('ul.slider-detail li img.img-slider.img-' + currentImage).addClass('img-zoom-in');
+    jQuery('.slider-detail-custom .bx-viewport').addClass('img-zoom-in');
+    jQuery('.row.home-slider-detail .btn-slider-detail').addClass('img-zoom-in');
+    jQuery('.row.home-slider-detail .control-slider').addClass('img-zoom-in');
+    jQuery('.slider-detail-custom .slide_box .slide_corner-box').hide();
+    jQuery('.slider-detail-custom .content-img').hide();
+    var heightSliderDetail = parseInt(jQuery('.home-slider-detail .slider-detail-custom .bx-viewport').css("height"));
+    var posTopSliderDetail = jQuery('.home-slider-detail .slider-detail-custom .bx-viewport').offset().top;
+    var posLeftSliderDetail = jQuery('.home-slider-detail .slider-detail-custom .bx-viewport').offset().left;
+    var widthSliderDetail = parseInt(jQuery('.home-slider-detail .slider-detail-custom .bx-viewport').css("width"));
+    var widthImage = jQuery('ul.slider-detail li img.img-slider.img-' + currentImage).width();
+    var heightImage = jQuery('ul.slider-detail li img.img-slider.img-' + currentImage).height();
+    jQuery('ul.slider-detail li img.img-zoom-in.img-slider.img-' + currentImage).draggable({
+        containment: [-widthImage + posLeftSliderDetail + widthSliderDetail, -heightImage + heightSliderDetail + posTopSliderDetail, posLeftSliderDetail, posTopSliderDetail],
+
+        start: function() {
+
+        },
+        drag: function(e, ui) {
+            
+        }
+    });
+     jQuery('ul.slider-detail li img.img-slider.img-' + currentImage).draggable('enable');
+    // alert(currentImage);
+}
+function zoomOutImage (currentImage) {
+    jQuery('ul.slider-detail li img.img-slider.img-' + currentImage).removeClass('img-zoom-in');
+    jQuery('.slider-detail-custom .bx-viewport').removeClass('img-zoom-in');
+    jQuery('.row.home-slider-detail .btn-slider-detail').removeClass('img-zoom-in');
+    jQuery('.row.home-slider-detail .control-slider').removeClass('img-zoom-in');
+    jQuery('.slider-detail-custom .slide_box .slide_corner-box').show();
+    jQuery('.slider-detail-custom .content-img').show();
+    jQuery('ul.slider-detail li img.img-slider.img-' + currentImage).css('top', 0);
+    jQuery('ul.slider-detail li img.img-slider.img-' + currentImage).css('left', 0);
+    if (jQuery('ul.slider-detail li img.img-slider.img-' + currentImage).hasClass('ui-draggable') == true) {
+            jQuery('ul.slider-detail li img.img-slider.img-' + currentImage).draggable('disable');
+        }
+}

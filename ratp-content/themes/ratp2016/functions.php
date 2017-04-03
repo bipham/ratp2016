@@ -24,6 +24,9 @@ function show_module($modules) {
             case "module_1_column_block":
                 $html .= View::render('module/module_1_column_block', $module, false, false);
                 break;
+            case "module_1_column_text_bottom":
+                $html .= View::render('module/module_1_column_text_bottom', $module, false, false);
+                break;
             case "module_1_column_image_text":
                 $html .= View::render('module/module_1_column_image_text', $module, false, false);
                 break;
@@ -68,8 +71,7 @@ function show_module($modules) {
 }
 
 function show_block_nos_publication() {
-    $postId = 193;
-    $postId = 22;
+    $postId = 195;
     $data = array(
         'title' => get_field('publication_title', $postId),
         'lists' => get_field('list_item', $postId)
@@ -97,11 +99,11 @@ function insert_libs() {
     // Enqueue the style
     wp_enqueue_style('bootstrap-them-css',  get_stylesheet_directory_uri() . '/libs/bootstrap/css/bootstrap-theme.min.css');
     // Enqueue the style
-    wp_enqueue_style('font-awesome-css',  get_stylesheet_directory_uri() . '/libs/font-awesome/css/font-awesome.min.css');
-    // Enqueue the style
     wp_enqueue_style('jquey-ui-css',  get_stylesheet_directory_uri() . '/libs/jquery-ui/jquery-ui.css');
     // Enqueue the style
-    // wp_enqueue_style('bx-slider-css',  get_stylesheet_directory_uri() . '/libs/bxslider/jquery.bxslider.css');
+    wp_enqueue_style('font-awesome-css',  get_stylesheet_directory_uri() . '/libs/font-awesome/css/font-awesome.min.css');
+    // Enqueue the style
+    wp_enqueue_style('bx-slider-css',  get_stylesheet_directory_uri() . '/libs/bxslider/jquery.bxslider.css');
     // Enqueue the style
     wp_enqueue_style('slider-css',  get_stylesheet_directory_uri() . '/public/css/slider.css');
      // Enqueue the style

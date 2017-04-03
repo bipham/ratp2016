@@ -17,7 +17,7 @@
  *
  * @package WordPress
  */
-define( 'WP_CONTENT_DIR', 'D:/xampp/htdocs/ratp2016/ratp-content' ); // Do not remove. Removing this line could break your site. Added by Security > Settings > Change Content Directory.
+define( 'WP_CONTENT_DIR', 'F:/xampp/htdocs/ratp2016/ratp-content' ); // Do not remove. Removing this line could break your site. Added by Security > Settings > Change Content Directory.
 define( 'WP_CONTENT_URL', 'http://ratp2016.dev/ratp-content' ); // Do not remove. Removing this line could break your site. Added by Security > Settings > Change Content Directory.
 
 

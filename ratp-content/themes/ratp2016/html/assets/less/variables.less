@@ -1,10 +1,10 @@
 //** Load fonts from this directory.
 @font-ratp-path:          "../fonts/";
 @font-family-regular: 'parisineofficeregular';
-@font-family-italic: 'parisineofficeitalic';
-@font-family-bold: 'parisineofficebold';
+@font-family-italic:  'parisineofficeitalic';
+@font-family-bold:    'parisineofficebold';
 @font-roboto-regular: 'robotoregular';
-@font-roboto-bold: 'robotobold';
+@font-roboto-bold:    'robotobold';
 //** Load fonts-size from this directory.
 @font-size-ratp: 14px;
 @font-size-ratp2: ceil((@font-size-ratp * 1.07)); // ~15px
@@ -97,25 +97,33 @@
 }
 .border-radius(@radius) {
   -webkit-border-radius: @radius;
-     -moz-border-radius: @radius;
-          border-radius: @radius;
+  -moz-border-radius: @radius;
+  border-radius: @radius;
 }
 .align-items-center {
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
-    align-items: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
 }
 .flex {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
 }
 .middel{
   width: 500px;
   display: table-cell;
-  vertical-align: middle;
+  &.center{
+    vertical-align: middle;
+  }
+  &.top{
+    vertical-align: top;
+  }
+  &.bottom{
+    vertical-align: bottom;
+  }
 }
 .before-after-clear{
   &:before,
@@ -128,4 +136,7 @@
 .mobi-full-width{
   margin-left: -15px;
   margin-right: -15px;
+}
+.justify-content{
+  justify-content: space-around;
 }

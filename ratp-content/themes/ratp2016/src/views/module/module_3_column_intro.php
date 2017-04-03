@@ -15,7 +15,7 @@
         <!-- end column-left -->
 
         <div class="column-right visible-desktop">
-            <ul id="slider-intro" class="bxslider">
+            <ul id="slider-intro" class="bx-slider">
                 <?php foreach($slider as $slide):?>
                 <li>
                     <div class="slider-content"><?php echo $slide['content']?></div>
