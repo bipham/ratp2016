@@ -4,9 +4,8 @@ get_header();
  $sliders = get_field( 'slider'); 
 //echo '<pre>'; 
 //print_r($sliders); 
-// var_dump(floatval($sliders[1]['bottom_position_image'])); 
+var_dump(floatval($sliders[1]['bottom_position_image'])); 
 ?>
-<div class="infoTest"></div>
       <div class="row home-slider-overview">
          <div id="sliderContent" class="ui-corner-all slider-custom">
             <div class="viewer ui-corner-all">
@@ -105,6 +104,40 @@ get_header();
          </div>
       </div>
       <!-- end row home-slider-detail -->
+      <div class="slider-mobile">
+                <div class="control-slider-mobile">
+                <?php foreach ($sliders as $key=> $slider): 
+                  $slider_desktop = $slider['image_desktop']; 
+                  $slider_mobile = $slider['image_mobile'];
+                  if ($slider_desktop['url'] != ''):
+                ?>
+                <i class="fa fa-circle item-pagination-circle item-pagination-<?php echo $key; ?> <?php if ($key == 0) echo 'active'; ?>"" data-slide-index-mobile="<?php echo $key; ?>" aria-hidden="true"></i>
+
+            <?php endif; ?>
+            <?php endforeach; ?>
+         </div>
+          <ul class="bxslider slider-mobile">
+
+
+              <?php foreach ($sliders as $key=> $slider): 
+                  $slider_desktop = $slider['image_desktop']; 
+                  $slider_mobile = $slider['image_mobile']; 
+                  if ($slider_desktop['url'] != ''):
+                  ?>
+
+               <li data-slide-index="<?php echo $key; ?>">
+                  <img src="<?php echo $slider_desktop['url']; ?>" />
+                  <div class="content-img-mobile">
+                           <div class="title-img-mobile"><?php echo $slider['title_image_desktop']; ?></div>
+                           <div class="content-mobile-detail"><?php echo $slider['content_image_desktop']; ?></div>
+                </div>
+               </li>
+                
+                <?php endif; ?>
+               <?php endforeach; ?>
+          </ul>
+      </div>
+      <!-- end slider-mobile -->
       <div class="block-publications">
           <h1 class="title">
             Nos Publications

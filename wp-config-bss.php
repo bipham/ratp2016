@@ -23,7 +23,7 @@ define( 'WP_CONTENT_URL', 'http://web.beesightsoft.com/rapt2016/ratp-content' );
 
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define('DB_NAME', 'rapt2016-dev');
+define('DB_NAME', 'rapt2016');
 
 /** MySQL database username */
 define('DB_USER', 'root');

@@ -97,6 +97,8 @@ function insert_libs() {
     // Enqueue the style
     wp_enqueue_style('bootstrap-them-css',  get_stylesheet_directory_uri() . '/libs/bootstrap/css/bootstrap-theme.min.css');
     // Enqueue the style
+    wp_enqueue_style('font-awesome-css',  get_stylesheet_directory_uri() . '/libs/font-awesome/css/font-awesome.min.css');
+    // Enqueue the style
     wp_enqueue_style('jquey-ui-css',  get_stylesheet_directory_uri() . '/libs/jquery-ui/jquery-ui.css');
     // Enqueue the style
     // wp_enqueue_style('bx-slider-css',  get_stylesheet_directory_uri() . '/libs/bxslider/jquery.bxslider.css');

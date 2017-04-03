@@ -13,6 +13,8 @@ var thumbnailScroll = jQuery('#bx-pager');
 var ul_thumbnail = jQuery('ul.thumbnail-list-img');
 var widthBxPager = 0;
 var view = jQuery('.viewer.ui-corner-all');
+// var li_thumbnail = jQuery('ul.thumbnail-list-img li.li-img-thumb')
+var item = jQuery(".item", jQuery("#sliderContent"));
 
 //set length of conveyor
 conveyor.css("width", item_vertical.length * parseInt(item_vertical.css("width")) + item_horizontal.length * parseInt(item_horizontal.css("width")));
@@ -22,7 +24,6 @@ var widthBody = parseInt(jQuery('body').css("width"));
 var widthSliderContent = parseInt(jQuery('#sliderContent').css("width"));
 var posLeftConveyor = (widthBody - widthSliderContent) / 2;
 var widthConveyor = parseInt(conveyor.css("width"));
-
 var posXInit = (widthBody - parseInt(jQuery('.thumbnail-slider').css("width"))) / 2 + 8;
 var startX;
 widthBxPager = widthConveyor / 10;
@@ -31,46 +32,34 @@ var widthThumbnailScroll = widthBxPager;
 thumbnailScroll.css("width", widthBxPager + 12);
 var totalImgSlider = item_vertical.length + item_horizontal.length;
 var slideIndexThumb = 0;
-//create slider
-jQuery(function() {
 
+jQuery(function() {
     conveyor.draggable({
         axis: 'x',
-        scroll: false,
+        scroll: true,
+        scrollSpeed: 100,
+        scrollSensitivity: 100,
         containment: [-widthConveyor + posLeftConveyor + widthSliderContent, 0, posLeftConveyor, 0],
         start: function() {
-            startX = drag.position().left;
-            console.log('start: ' + startX);
+
         },
-        drag: function() {
+        drag: function(event, ui) {
             var indexThumb = 0;
             var posXSlider = jQuery(this).position().left;
             var posXDrag = drag.position().left;
             var moveXThumb = posXSlider/10;
             drag.css("left", -moveXThumb + "px");
-
-            console.log('IS: ' + posXDrag);
-
-            // if (posXDrag < 45) {
-            //     indexThumb = 0;
-            // } else {
-            //     var tmp = Math.floor((posXDrag + 40 - parseInt(li_thumbnail.css("width"))) / (parseInt(li_thumbnail.css("width")) / 2));
-            //     indexThumb = Math.floor(tmp / 2) + 1;
-            // }
-            // if (startX < posXDrag) {
-            //     jQuery('li-img-' + indexThumb).addClass('img-visiting');
-
-            //     var preIndexThumb = indexThumb - 1;
-            //     jQuery('li-img-' + preIndexThumb).removeClass('img-visiting');
-            // } else {
-            //     var liSelected = 'li-img-' + indexThumb;
-            //     jQuery('li-img-' + preIndexThumb).addClass('img-visiting');
-            //     var preIndexThumb = indexThumb + 1;
-            //     jQuery('li-img-' + preIndexThumb).removeClass('img-visiting');
-            // }
+            var leftOfDrag = jQuery('#draggable').position().left + 6;
+            var rightOfDrag = leftOfDrag + 96;
+            jQuery(".item", jQuery("#sliderContent")).each(function() {
+                if (jQuery(this).offset().left > posLeftConveyor) {
+                    slideIndex = jQuery(this).attr('data-slide-index');
+                    return false;
+                }
+            }) ;
+            updateVisiting(jQuery('.li-img-' + slideIndex), slideIndex, leftOfDrag, rightOfDrag);
         },
         stop: function() {
-            var posXSlider = jQuery(this).position().left;
         }
     });
 });
@@ -78,114 +67,106 @@ jQuery(function() {
 jQuery(function() {
     jQuery("#draggable").draggable({
         axis: 'x',
-        scroll: false,
-        // containment: [posXInit, 0, posLeftConveyor + 10 + (li_thumbnail.length - 1) * parseInt(li_thumbnail.css("width")), 0],
+        scroll: true,
+        // containment: [posXInit, 0, posLeftConveyor + 10 + widthBxPager, 0],
         containment: '#bx-pager',
-        scrollSpeed: 10000,
-    start: function() {
-            startX = drag.position().left;        
-            console.log('start: ' + startX);
+        scrollSpeed: 100,
+        scrollSensitivity: 100,
+        start: function() {
+
         },
         drag: function(e, ui) {
+            // ui.position.left = ui.position.left-100;
             posXDrag = jQuery(this).position().left;
-            var leftOfDrag = jQuery('#draggable').position().left + 7;
+            var leftOfDrag = jQuery('#draggable').position().left + 6;
             var rightOfDrag = leftOfDrag + 96;
-            var distMoveThumb = posXDrag - startX;
             var moveXSlider = (posXDrag) * (widthConveyor / (widthThumbnailScroll));
             conveyor.css("left", "-" + moveXSlider + "px");
-            // if (jQuery('.li-img-' + slideIndexThumb).find('.img-thumbnail img').hasClass('img-thumb-vertical') == true) {
-            //     if (distMoveThumb > 32) {
-            //         jQuery('.li-img-' + slideIndexThumb).removeClass('img-visiting');
-            //         slideIndexThumb = slideIndexThumb + 1;
-            //         for (var i = parseInt(slideIndexThumb); i < (parseInt(slideIndexThumb) + 3); i++) {
-            //             if (i > (totalImgSlider - 1)) {
-            //                 return;
-            //             }
-            //             else {
-            //                 var positionOfNextThumb = jQuery('.li-img-' + i).position().left;
-            //                 if (positionOfNextThumb < rightOfDrag) {
-            //                     jQuery('.li-img-' + i).addClass('img-visiting');
-            //                 } 
-            //                 // else {
-            //                 //     jQuery('.li-img-' + i).removeClass('img-visiting');
-            //                 // }
-            //             }
-            //         }
-            //     }
-            //     else {
+            
+            // conveyor.animate({
+            //     'left': moveXSlider + 'px'
+            // }, 0, function() {
 
-            //     }
-            // }
-            // else {
-            //     if (distMoveThumb > 64) {
-            //         jQuery('.li-img-' + slideIndexThumb).removeClass('img-visiting');
-            //         slideIndexThumb = slideIndexThumb + 1;
-            //     }
-            // }
+            // });
+            updateVisiting(jQuery('.li-img-' + slideIndex), slideIndex, leftOfDrag, rightOfDrag);
         }
     });
 });
 
 jQuery(".img-drop-active").droppable({
-    accept: '#draggable',
+    accept: '#draggable', 
     axis: 'x',
     containment: '#bx-pager',
-        scrollSpeed: 10000,
+     scroll: true,
+    scrollSpeed: 100,
+    scrollSensitivity: 100,
     start: function() {
-            startX = drag.position().left;
-            var posXDrag = drag.position().left;
-            console.log('IS: ' + posXDrag);
-            console.log('start: ' + startX);
+
         },
     over: function(event, ui) {
         slideIndex = jQuery(this).parent().attr('data-slide-index');
-        var leftOfDrag = jQuery('#draggable').position().left + 7;
-        var rightOfDrag = leftOfDrag + 96;
-
-        for (var i = parseInt(slideIndex) - 1; i > (parseInt(slideIndex) - 4); i--) {
-            if (i < 0) return;
-            else {
-                if (jQuery('.li-img-' + i).find('.img-thumbnail img').hasClass('img-thumb-vertical') == true) {
-                     var positionOfPreThumb = jQuery('.li-img-' + i).position().left + 32;
-                }
-                else  var positionOfPreThumb = jQuery('.li-img-' + i).position().left + 64;
-
-                if (positionOfPreThumb > leftOfDrag) {
-                    jQuery('.li-img-' + i).addClass('img-visiting');
-
-                }
-                else {
-                    jQuery('.li-img-' + i).removeClass('img-visiting');
-                    break;
-                } 
-            } 
-        }
-
-        for (var i = parseInt(slideIndex) + 1; i < (parseInt(slideIndex) + 4); i++) {
-            if (i > (totalImgSlider - 1)) {
-                return;
-            }
-            else {
-                var positionOfNextThumb = jQuery('.li-img-' + i).position().left;
-                if (positionOfNextThumb < rightOfDrag) {
-                    jQuery('.li-img-' + i).addClass('img-visiting');
-                } 
-                else {
-                    jQuery('.li-img-' + i).removeClass('img-visiting');
-                    break;
-                }
-            }
-        }
-
-        jQuery('.li-img-' + slideIndex).addClass('img-visiting');
+        jQuery(this).parent().addClass('img-visiting');
     },
     out: function(event, ui) {
-        // jQuery(this).parent().removeClass('img-visiting');
+
     },
     drop: function() {
 
     }
 });
+
+function updateVisiting ($this, slideIndex, leftOfDrag, rightOfDrag) {
+        for (var i = parseInt(slideIndex) - 1; i > -1; i--) {
+            if (jQuery('.li-img-' + i).find('.img-thumbnail img').hasClass('img-thumb-vertical') == true) {
+                    var rightOfPreDiv = jQuery('.li-img-' + i).position().left + 32;
+            }
+            else var rightOfPreDiv = jQuery('.li-img-' + i).position().left + 64;
+            
+            if (rightOfPreDiv > leftOfDrag) {
+               
+                 jQuery('.li-img-' + i).addClass('img-visiting');
+            }
+            
+            else {
+                jQuery('.li-img-' + i).removeClass('img-visiting');
+                break;
+            }
+        }
+
+        for (var i = parseInt(slideIndex) + 1; i < totalImgSlider; i++ ) {
+            if (jQuery('.li-img-' + i).position().left < rightOfDrag) {
+               
+                jQuery('.li-img-' + i).addClass('img-visiting');
+                
+            }
+            else {
+                 jQuery('.li-img-' + i).removeClass('img-visiting');
+                 break;
+            }
+        }
+};
+
+function removeVisit ($this, slideIndex, leftOfDrag, rightOfDrag) {
+        for (var i = parseInt(slideIndex) - 1; i > -1; i--) {
+            if (jQuery('.li-img-' + i).find('.img-thumbnail img').hasClass('img-thumb-vertical') == true) {
+                    var rightOfPreDiv = jQuery('.li-img-' + i).position().left + 32;
+            }
+            else var rightOfPreDiv = jQuery('.li-img-' + i).position().left + 64;
+            
+            if (rightOfPreDiv > leftOfDrag) {
+               
+                 jQuery('.li-img-' + i).removeClass('img-visiting');
+            }
+        }
+
+        for (var i = parseInt(slideIndex) + 1; i < totalImgSlider; i++ ) {
+           if (jQuery('.li-img-' + i).position().left < rightOfDrag) {
+               
+                jQuery('.li-img-' + i).removeClass('img-visiting');
+                
+            }
+        }
+};
 
 jQuery('.row.home-slider-overview').hover(function(event) {
     if (isHover == false) {
@@ -203,60 +184,44 @@ jQuery('.frame-slider-cover').click(function() {
 
 jQuery('ul.thumbnail-list-img li').click(function() {
     var oldIndex = jQuery(".img-visiting").attr('data-slide-index');
+    jQuery('.li-img-' + oldIndex).removeClass('img-visiting');
     chooseThumbnailImage(jQuery(this), oldIndex);
 });
 
 function chooseThumbnailImage($this, oldIndex) {
-    var currentIndex = $this.attr('data-slide-index');
+    slideIndex = $this.attr('data-slide-index');
     // var 
     $this.addClass('img-visiting');
-    jQuery('.li-img-' + oldIndex).removeClass('img-visiting');
     var posX = $this.position().left;
-    var posY = jQuery('#draggable').position().top;
-    var oldNexLiSelect = parseInt(oldIndex) + 1;
-    var oldSecondLiSelect = parseInt(oldNexLiSelect) + 1;
-    if (currentIndex == (totalImgSlider - 1)) {
+    var posXDrag = jQuery('#draggable').position().left;
+
+    removeVisit(jQuery('.li-img-' + slideIndex), slideIndex, (posXDrag + 6), (posXDrag + 102));
+
+    if (slideIndex == (totalImgSlider - 1)) {
         if ($this.find('.img-thumbnail img').hasClass('img-thumb-vertical') == true) {
             posX = posX - 6 - 64;
         } else {
             posX = posX - 6 - 32;
         }
-        var newNexLiSelect = parseInt(currentIndex) - 1;
-        var newSecondLiSelect = parseInt(newNexLiSelect) - 1;
-
     } else {
         posX = posX - 6;
-        var newNexLiSelect = parseInt(currentIndex) + 1;
-        var newSecondLiSelect = parseInt(newNexLiSelect) + 1;
     }
 
-    if ((jQuery('.li-img-' + oldIndex).find('.img-thumbnail img').hasClass('img-thumb-vertical') == true) && (jQuery('.li-img-' + oldNexLiSelect).find('.img-thumbnail img').hasClass('img-thumb-vertical') == true)) {
-        jQuery('.li-img-' + oldNexLiSelect).removeClass('img-visiting');
-        jQuery('.li-img-' + oldSecondLiSelect).removeClass('img-visiting');
-    } else {
-        jQuery('.li-img-' + oldNexLiSelect).removeClass('img-visiting');
-    }
-
-    if (($this.find('.img-thumbnail img').hasClass('img-thumb-vertical') == true) && (jQuery('.li-img-' + newNexLiSelect).find('.img-thumbnail img').hasClass('img-thumb-vertical') == true)) {
-        jQuery('.li-img-' + newNexLiSelect).addClass('img-visiting');
-        jQuery('.li-img-' + newSecondLiSelect).addClass('img-visiting');
-    } else {
-        jQuery('.li-img-' + newNexLiSelect).addClass('img-visiting');
-    }
+    
     jQuery('#draggable').animate({
-        'top': posY + 'px',
         'left': posX + 'px'
     }, 100, function() {
 
     });
 
-    var newY = conveyor.position().top;
     var newX = posX * 10;
     conveyor.animate({
         'left': "-" + newX + 'px'
-    }, 100, function() {
+    }, 200, function() {
 
     });
+
+    updateVisiting(jQuery('.li-img-' + slideIndex), slideIndex, (posX + 6), (posX + 102));
 }
 
 
@@ -270,7 +235,9 @@ jQuery('#sliderContent div.item .btn-zoom').click(function() {
         slideMargin: 50,
         controls: false,
         speed: 500,
+                pagerCustom: '.customSlider',
         pagerType: 'short',
+        infiniteLoop: false,
         onSlideAfter: function($slideElement, oldIndex, newIndex) {
             sliderDetailTotal = sliderDetail.getSlideCount();
             updateIndexSlider(newIndex, sliderDetailTotal);
@@ -322,3 +289,27 @@ jQuery('.prev-btn').click(function() {
         updateIndexSlider(currentDetail - 1, sliderDetailTotal);
     }
 });
+
+//create slider
+sliderMobile = jQuery('.bxslider.slider-mobile').bxSlider({
+        startSlide: 0,
+        slideMargin: 50,
+        controls: false,
+        pagerCustom: '.customSliderMobile',
+        speed: 500,
+        onSlideAfter: function($slideElement, oldIndex, newIndex) {
+            updateStatusSelectMobile (newIndex, oldIndex);
+        }
+});
+
+jQuery('i.item-pagination-circle').click(function() {
+    var newIndexMobile = jQuery(this).data('slide-index-mobile');
+    var currentIndexMobile = sliderMobile.getCurrentSlide();
+    updateStatusSelectMobile(newIndexMobile, currentIndexMobile);
+    sliderMobile.goToSlide(newIndexMobile);
+});
+
+function updateStatusSelectMobile (newIndex, oldIndex) {
+    jQuery('.item-pagination-' + newIndex).addClass('active');
+    jQuery('.item-pagination-' + oldIndex).removeClass('active');
+};

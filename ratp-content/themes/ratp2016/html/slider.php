@@ -1,97 +1,33 @@
 <?php 
 /* Template Name: Home */ 
-get_header(); $sliders = get_field( 'slider'); 
+get_header();
+ $sliders = get_field( 'slider'); 
 //echo '<pre>'; 
 //print_r($sliders); 
-// var_dump($sliders); 
+var_dump(floatval($sliders[1]['bottom_position_image'])); 
 ?>
-<div class="page-accueil">
-   <div class="container">
-           <div class="menu-justified-page-accueil">
-          <ul class="nav nav-tabs">
-            <li class="active">
-              <a href="#">
-                <div class="middel">
-                  <span class="visible-desktop">Une dynamique de transformation</span>
-                  <span class="visible-mobi">2016 en images</span>
-                </div>
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <div class="middel">
-                  Une dynamique stratégique
-                </div>
-              </a>
-            </li>
-            <li class="visible-desktop"><button href="#" class="btn btn-publications">Publications</button></li>
-          </ul>
-          <!-- <ul class="nav nav-justified">
-              <li>
-                <a href="#">
-                  <div class="middel">
-                    <span class="visible-desktop">Le Groupe en 2016</span>
-                    <span class="visible-mobi">Groupe</span>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <div class="middel">
-                    <span class="visible-desktop">Acteur essentiel de la ville durable</span>
-                    <span class="visible-mobi">Ville durable</span>
-                  </div>
-                </a>
-              </li>
-              <li class="active">
-                <a href="#">
-                  <div class="middel">
-                    <span class="visible-desktop">Au rendez-vous de l’excellence</br>voyageurs</span>
-                    <span class="visible-mobi">Excellence</span>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="#">
-                  <div class="middel">
-                    <span class="visible-desktop">L’innovation dans tous les</br>domaines</span>
-                    <span class="visible-mobi">Innovation</span>
-                  </div>
-                </a>
-              </li>
-            </ul> -->
-        </div>
       <div class="row home-slider-overview">
          <div id="sliderContent" class="ui-corner-all slider-custom">
             <div class="viewer ui-corner-all">
                <div class="content-conveyor ui-helper-clearfix">
-                  <?php foreach ($sliders as $key=> $slider): $slider_desktop = $slider['image_desktop']; $slider_mobile = $slider['image_mobile']; ?>
-                  <div class="item" data-slide-index="<?php echo $key; ?>">
-                     <span class="slide_effect-back slide-pull-left-landscape">
-                        <div class="slide_box">
-                           <img src="<?php echo $slider_desktop['url']; ?>" class="img-<?php echo (2*$key); ?> img-slider img-left" data-slide-offset = "<?php echo (2*$key); ?>"/>
-                           <div class="slide_corner-box">
-                              <a class="slide_page-tip">
-                                 <div class="slide_corner-contents">
-                                    <div class="slide_corner-button btn-zoom" data-slide-offset = "<?php echo (2*$key); ?>"><img class="img-rollover" src="../ratp-content/themes/ratp2016/public/img/rollover.png"></div>
+                  <?php 
+                  foreach ($sliders as $key=> $slider): 
+                      $slider_desktop = $slider['image_desktop']; 
+                      ?>
+                        <div class="item" data-slide-index="<?php echo $key; ?>" style="bottom: <?php echo floatval($slider['bottom_position_image']); ?>px; right:  <?php echo floatval($slider['right_position_image']); ?>px">
+                           <span class="slide_effect-back slide-pull">
+                              <div class="slide_box">
+                                 <img src="<?php echo $slider_desktop['url']; ?>" class="img-<?php echo ($key); ?> img-slider <?php if ($slider_desktop['width'] < 1000) echo "img-home-slider-vertical"; else echo "img-home-slider-horizontal"; ?>" data-slide-offset = "<?php echo ($key); ?>"/>
+                                 <div class="slide_corner-box">
+                                    <a class="slide_page-tip">
+                                       <div class="slide_corner-contents">
+                                          <div class="slide_corner-button btn-zoom" data-slide-offset = "<?php echo ($key); ?>"><img class="img-rollover" src="../ratp-content/themes/ratp2016/public/img/rollover.png"></div>
+                                       </div>
+                                    </a>
                                  </div>
-                              </a>
-                           </div>
+                              </div>
+                           </span>
                         </div>
-                     </span>
-                     <span class="slide_effect-back slide-pull-right-vertical">
-                        <div class="slide_box">
-                           <img src="<?php echo $slider_mobile['url']; ?>" class="img-<?php echo (2*$key) + 1; ?> img-slider img-right" data-slide-offset = "<?php echo (2*$key) + 1; ?>"/>
-                           <div class="slide_corner-box">
-                              <a class="slide_page-tip">
-                                 <div class="slide_corner-contents">
-                                    <div class="slide_corner-button btn-zoom" data-slide-offset = "<?php echo (2*$key) + 1; ?>"><img class="img-rollover" src="../ratp-content/themes/ratp2016/public/img/rollover.png"></div>
-                                 </div>
-                              </a>
-                           </div>
-                        </div>
-                     </span>
-                  </div>
                   <?php endforeach; ?>
                </div>
             </div>
@@ -99,22 +35,13 @@ get_header(); $sliders = get_field( 'slider');
                <div class="thumbnail-slider">
                   <div id="bx-pager">
                      <ul class="thumbnail-list-img">
-                        <?php foreach ($sliders as $key=> $slider): $slider_desktop = $slider['image_desktop']; $slider_mobile = $slider['image_mobile']; ?>
-                        <li class="li-img-<?php echo $key; ?>">
-                           <a data-slide-index="<?php echo $key; ?>">
-                              <div class="img-drop-active <?php if ($key == 0) echo 'img-visiting'; ?>">
-                                 <div class="img-thumbnail-over-left">
-                                    <img src="<?php echo $slider_desktop['url']; ?>"
-                                       class="img-thumbnail-<?php echo $key; ?> img-thumbnail-left img-thumb"
-                                       data-slide-offset="<?php echo $key; ?>"/>
-                                 </div>
-                                 <div class="img-thumbnail-over-right img-drop">
-                                    <img src="<?php echo $slider_mobile['url']; ?>"
-                                       class="img-thumbnail-<?php echo $key; ?> img-thumbnail-right img-thumb"
-                                       data-slide-offset="<?php echo $key + 1; ?>"/>
-                                 </div>
+                        <?php foreach ($sliders as $key=> $slider): 
+                            $slider_desktop = $slider['image_desktop'];  
+                          ?>
+                        <li class="li-img-<?php echo $key; ?> li-img-thumb <?php if ($key == 0) echo 'img-visiting'; ?>" data-slide-index="<?php echo $key; ?>" style="bottom: <?php echo floatval($slider['bottom_position_image']/10); ?>px; right:  <?php echo floatval($slider['right_position_image']/10); ?>px">
+                              <div class="img-drop-active img-thumbnail img-thumb-scroll">                       
+                                    <img src="<?php echo $slider_desktop['url']; ?>" class="img-thumbnail-<?php echo $key; ?> img-thumb <?php if ($slider_desktop['width'] < 1000) echo "img-thumb-vertical"; else echo "img-thumb-horizontal"; ?>" data-slide-offset="<?php echo $key; ?>"/>
                               </div>
-                           </a>
                         </li>
                         <?php endforeach; ?>
                      </ul>
@@ -143,11 +70,12 @@ get_header(); $sliders = get_field( 'slider');
                <li>
                   <div class="slide_effect-back">
                      <div class="slide_box">
-                        <img src="<?php echo $slider_desktop['url']; ?>" class="img-<?php echo (2*$key); ?> img-slider" data-slide-index="<?php echo $key; ?>" data-slide-offset="<?php echo (2*$key); ?>" />
+                        <img src="<?php echo $slider_desktop['url']; ?>" class="img-<?php echo ($key); ?> img-slider <?php if ($slider_desktop['width'] < 1000) echo "img-vertical"; else echo "img-horizontal"; ?>" data-slide-index="<?php echo $key; ?>" data-slide-offset="<?php echo ($key); ?>" />
                         <div class="slide_corner-box">
                            <a class="slide_page-tip" href="#">
                               <div class="slide_corner-contents">
-                                 <div class="slide_corner-button btn-exit" data-slide-index="<?php echo $key; ?>" data-slide-offset="<?php echo (2*$key); ?>"><img class="img-rollover" src="../ratp-content/themes/ratp2016/public/img/rollover-close.png">
+                                 <div class="slide_corner-button btn-exit" data-slide-index="<?php echo $key; ?>" data-slide-offset="<?php echo ($key); ?>">
+                                      <img class="img-rollover" src="../ratp-content/themes/ratp2016/public/img/rollover-close.png">
                                  </div>
                               </div>
                            </a>
@@ -157,27 +85,6 @@ get_header(); $sliders = get_field( 'slider');
                         <div class="content-img-detail">
                            <div class="title-img"><?php echo $slider['title_image_desktop']; ?></div>
                            <div class="content-detail-body"><?php echo $slider['content_image_desktop']; ?></div>
-                        </div>
-                     </span>
-                  </div>
-               </li>
-               <li>
-                  <div class="slide_effect-back slide-pull-vertical">
-                     <div class="slide_box">
-                        <img src="<?php echo $slider_mobile['url']; ?>" class="img-<?php echo (2*$key) + 1; ?> img-slider" data-slide-index="<?php echo $key; ?>" data-slide-offset="<?php echo (2*$key) + 1; ?>" />
-                        <div class="slide_corner-box">
-                           <a class="slide_page-tip" href="#">
-                              <div class="slide_corner-contents">
-                                 <div class="slide_corner-button btn-exit" data-slide-index="<?php echo $key; ?>" data-slide-offset="<?php echo (2*$key) + 1; ?>"><img class="img-rollover" src="../ratp-content/themes/ratp2016/public/img/rollover-close.png">
-                                 </div>
-                              </div>
-                           </a>
-                        </div>
-                     </div>
-                     <span class="content-<?php echo $slider['position_content_mobile']; ?> img-vertical content-img-vertical content-img">
-                        <div class="content-img-detail">
-                           <div class="title-img"><?php echo $slider['title_image_mobile']; ?></div>
-                           <div class="content-detail-body"><?php echo $slider['content_image_mobile']; ?></div>
                         </div>
                      </span>
                   </div>
@@ -197,6 +104,22 @@ get_header(); $sliders = get_field( 'slider');
          </div>
       </div>
       <!-- end row home-slider-detail -->
+      <div class="slider-mobile">
+          <ul class="bxslider slider-mobile">
+              <?php foreach ($sliders as $key=> $slider): 
+                  // $slider_desktop = $slider['image_desktop']; 
+                  $slider_mobile = $slider['image_mobile']; 
+                  if ($slider_mobile['url'] != ''):
+                  ?>
+
+               <li>
+                  <img src="<?php echo $slider_mobile['url']; ?>" />
+               </li>
+                <?php endif; ?>
+               <?php endforeach; ?>
+          </ul>
+      </div>
+      <!-- end slider-mobile -->
       <div class="block-publications">
           <h1 class="title">
             Nos Publications
