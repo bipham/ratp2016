@@ -440,9 +440,9 @@ span#slider-prev.deactive {
     float: left;
     text-align: center;
     width: 100%;
-    padding-top: 33px;
+    padding-top: 50px;
     margin-bottom: 8px;
-    font-size: 28px;
+    font-size: 25px;
     font-weight: 600;
 }
 
@@ -456,8 +456,8 @@ span#slider-prev.deactive {
     word-wrap: break-word;
     word-break: break-all;
     font-weight: 100;
-    font-size: 16px;
-    color: #e8e8e8;
+    font-size: 14px;
+    color: rgba(252, 248, 233, 0.81);
 }
 
 .row.home-slider-detail .btn-slider-detail {
@@ -669,7 +669,7 @@ img.img-slider {
     height: 742px;
     opacity: 1 !important;
     margin: 0 auto;
-    z-index: 1;
+    z-index: 1000;
     background: rgba(128, 128, 128, 0.47);
     top: 0px;
 }
